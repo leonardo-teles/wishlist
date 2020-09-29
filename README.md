@@ -1,27 +1,37 @@
-# Wishlist
+# Proyecto Wishlist
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.2.
+Proyect desarrollado como evaluación del módulo 1 del curso 'Desarrolla de Páginas con Angular' de Coursera.
 
-## Development server
+## Escopo Global de Curso
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Introducción a Angular y primera SPA
+- Programación Reactiva basada en Componentes
+- Conceptos avanzados e integración al stack MEAN
+- Componentes avanzados, testing automático y Trabajo Final
 
-## Code scaffolding
+## Escopo del Módulo 1 de Introducción
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- El paquete npm de Bootstrap instalado;
+- La importación de los CSS de Bootstrap en los estilos globales de la app Angular;
+- El desarrollo de al menos un componente donde se utilicen los estilos de Bootstrap;
+- Al menos un componente, que se use la sintaxis {{}} para cargar al menos un dato de alguna variable Typescript,
+por ejemplo, nombre o descripción;
+- Un componente contenedor de un listado de objetos, en el cual se vea un array de elementos, y éstos deben verse
+en el navegador;
+- En la pantilla HTML de listado, un tag UL con elementos LI, y con uso de la directiva ngFor, que 
+esté siendo usada para iterar sobre los elementos a mostrar;
+- El uso de @HostBinding en al menos un componente;
+- En el componente de listado, un formulario HTML con resoluciones de Angular(es decir, las variables de 
+plantilla #), que sea utilizado para ingresar los datos;
+- Que con la sintaxis de variables de formulario con el token #, al hacer click en un botón de submit, se
+invoque a una función del componente en Typescript, con el fin de agregar un nuevo ítem al listado;
+- En el componente contenedor del listado, que en Typescript exista la función en la cual se agregue 
+al array de elementos a mostrar al nuevo elemento, y que, como consecuencia, y de manera reactiva, se
+actualice la interfaz de usuario.
 
-## Build
+## Tecnologías
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- Angular CLI 10.0.2
+- Bootstrap 4.5.2
+- Node.js 12.18.2
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
