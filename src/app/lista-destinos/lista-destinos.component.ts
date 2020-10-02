@@ -10,17 +10,23 @@ export class ListaDestinosComponent implements OnInit {
 
   destinos: DestinoViaje[];
 
-  constructor() { 
+  constructor() {
     this.destinos = [];
    }
 
   ngOnInit(): void {
   }
 
-  guardar(nombre:string, url:string):boolean {
+  guardar(nombre: string, url: string): boolean {
     this.destinos.push(new DestinoViaje(nombre, url));
-    
+
     return false;
+  }
+
+  // tslint:disable-next-line: typedef
+  elegido(d: DestinoViaje) {
+    this.destinos.forEach(function(x) { x.setSelected(false); });
+    d.setSelected(true);
   }
 
 }
