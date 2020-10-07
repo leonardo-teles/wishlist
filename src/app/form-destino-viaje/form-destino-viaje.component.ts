@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { DestinoViaje } from '../models/destino-viaje.model';
 
 @Component({
@@ -11,6 +11,7 @@ export class FormDestinoViajeComponent implements OnInit {
   // tslint:disable-next-line: no-output-on-prefix
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
   fg: FormGroup;
+  minLongitud = 3;
 
   constructor(private fb: FormBuilder) {
     // inicializar
@@ -18,8 +19,12 @@ export class FormDestinoViajeComponent implements OnInit {
 
     // vinculación con la TAG HTML
     this.fg = this.fb.group({
-      nombre: ['', Validators.required],
-      url: ['']
+      nombre: ['', Validators.compose([
+        Validators.required,
+        this.nombreValidator,
+        this.nombreValidatorParametrizable(this.minLongitud)
+      ])],
+      url: ['', Validators.required]
     });
 
    // observador de tipeo
@@ -36,6 +41,25 @@ export class FormDestinoViajeComponent implements OnInit {
     this.onItemAdded.emit(d);
 
     return false;
+  }
+
+  nombreValidator(control: FormControl): { [s: string]: boolean } {
+    const l = control.value.toString().trim().length;
+    if (l > 0 && l < 5) {
+      return { invalidNombre: true };
+    }
+    return null;
+  }
+
+  nombreValidatorParametrizable(minLong: number): ValidatorFn {
+    return (control: FormControl): { [s: string]: boolean } | null => {
+      const l = control.value.toString().trim().length;
+      if (l > 0 && l < minLong) {
+        return { minLongNombre: true };
+      }
+
+      return null;
+    };
   }
 
 }
