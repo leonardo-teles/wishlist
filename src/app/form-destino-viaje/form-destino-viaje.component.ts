@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DestinoViaje } from '../models/destino-viaje.model';
 
 @Component({
@@ -18,7 +18,7 @@ export class FormDestinoViajeComponent implements OnInit {
 
     // vinculación con la TAG HTML
     this.fg = this.fb.group({
-      nombre: [''],
+      nombre: ['', Validators.required],
       url: ['']
     });
 
