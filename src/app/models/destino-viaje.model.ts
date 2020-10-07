@@ -1,4 +1,5 @@
 export class DestinoViaje {
+
   private selected: boolean;
   servicios: string[];
 
