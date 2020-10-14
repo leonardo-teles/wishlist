@@ -43,7 +43,7 @@ export class FormDestinoViajeComponent implements OnInit {
     fromEvent(elemNombre, 'input')
       .pipe(
         map((e: KeyboardEvent) => (e.target as HTMLInputElement).value),
-        filter(text => text.length > 2),
+        filter(text => text.length > 3),
         debounceTime(200),
         distinctUntilChanged(),
         switchMap(() => ajax('/assets/datos.json'))
