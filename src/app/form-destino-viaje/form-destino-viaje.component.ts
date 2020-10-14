@@ -29,7 +29,7 @@ export class FormDestinoViajeComponent implements OnInit {
         this.nombreValidator,
         this.nombreValidatorParametrizable(this.minLongitud)
       ])],
-      url: ['', Validators.required]
+      url: ['']
     });
 
    // observador de tipeo

@@ -1,7 +1,7 @@
 export class DestinoViaje {
 
-  selected: boolean;
-  servicios: string[];
+  private selected: boolean;
+  public servicios: string[];
 
   constructor(public nombre: string, public url: string) {
     this.servicios = ['pileta', 'desayuno'];

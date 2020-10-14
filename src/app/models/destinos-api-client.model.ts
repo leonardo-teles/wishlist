@@ -32,7 +32,9 @@ export class DestinosApiClient {
     this.current.next(d);
   }
 
+  // tslint:disable-next-line: typedef
   subscribeOnChange(fn) {
     this.current.subscribe(fn);
   }
 }
+

@@ -11,10 +11,11 @@ export class DestinoViajeComponent implements OnInit {
   @Input() destino: DestinoViaje;
   @Input() position: number;
   @HostBinding('attr.class') cssClass = 'col-md-4';
-  @Output() clicked: EventEmitter<DestinoViaje>;
+  // tslint:disable-next-line: no-output-on-prefix
+  @Output() onClicked: EventEmitter<DestinoViaje>;
 
   constructor() {
-    this.clicked = new EventEmitter();
+    this.onClicked = new EventEmitter();
   }
 
   ngOnInit(): void {
@@ -22,7 +23,7 @@ export class DestinoViajeComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   ir() {
-    this.clicked.emit(this.destino);
+    this.onClicked.emit(this.destino);
     return false;
   }
 }

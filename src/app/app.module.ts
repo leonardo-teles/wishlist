@@ -17,7 +17,7 @@ import { DestinosViajesEffects, DestinosViajesState, initializeDestinosViajesSta
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: ListaDestinosComponent },
-  { path: 'destino/:id', component: DestinoDetalleComponent }
+  { path: 'destino', component: DestinoDetalleComponent }
 ];
 
 // redux init
@@ -29,7 +29,7 @@ const reducers: ActionReducerMap<AppState> = {
   destinos: reducerDestinosViajes
 };
 
-let reducersInitialState = {
+const reducersInitialState = {
   destinos: initializeDestinosViajesState()
 };
 // redux fin init
@@ -39,7 +39,8 @@ let reducersInitialState = {
     AppComponent,
     DestinoViajeComponent,
     ListaDestinosComponent,
-    DestinoDetalleComponent
+    DestinoDetalleComponent,
+    FormDestinoViajeComponent
   ],
   imports: [
     BrowserModule,
