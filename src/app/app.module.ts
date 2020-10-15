@@ -15,13 +15,13 @@ import { DestinosApiClient } from './models/destinos-api-client.model';
 import { DestinosViajesEffects, DestinosViajesState, initializeDestinosViajesState, reducerDestinosViajes } from './models/destinos-viajes-state.model';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: ListaDestinosComponent },
-  { path: 'destino', component: DestinoDetalleComponent }
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'home', component: ListaDestinosComponent},
+  { path: 'destino', component: DestinoDetalleComponent}
 ];
 
 // redux init
-export interface AppState {
+export interface AppState{
   destinos: DestinosViajesState;
 }
 
@@ -32,6 +32,7 @@ const reducers: ActionReducerMap<AppState> = {
 const reducersInitialState = {
   destinos: initializeDestinosViajesState()
 };
+
 // redux fin init
 
 @NgModule({
@@ -44,12 +45,19 @@ const reducersInitialState = {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-    NgRxStoreModule.forRoot(reducers, { initialState: reducersInitialState }),
-    EffectsModule.forRoot([DestinosViajesEffects])
+    NgRxStoreModule.forRoot(reducers, {
+      initialState: reducersInitialState,
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+      }
+    }),
+    EffectsModule.forRoot([DestinosViajesEffects]),
+    AppRoutingModule
+    // StoreDevtoolsModule.instrument()
   ],
   providers: [
     DestinosApiClient
@@ -57,3 +65,4 @@ const reducersInitialState = {
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
