@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule as NgRxStoreModule, ActionReducerMap, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from '@angular/common/http';
+import Dexie from 'dexie';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { VuelosMainComponent } from './components/vuelos/vuelos-main/vuelos-main
 import { VuelosMasInfoComponent } from './components/vuelos/vuelos-mas-info/vuelos-mas-info.component';
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalle/vuelos-detalle.component';
 import { ReservasModule } from './reservas/reservas.module';
+import { DestinoViaje } from './models/destino-viaje.model';
 
 // app config
 export interface AppConfig {
@@ -95,6 +97,28 @@ class AppLoadService {
 
 // fin app init
 
+// dexie db
+export class Translation {
+  constructor(public id: number, public lang: string, public key: string, public value: string) {}
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyDatabase extends Dexie {
+  destinos: Dexie.Table<DestinoViaje, number>;
+  translations: Dexie.Table<Translation, number>;
+  constructor() {
+      super('MyDatabase');
+      this.version(1).stores({
+        destinos: '++id, nombre, imagenUrl'
+      });
+  }
+}
+
+export const db = new MyDatabase();
+// fin dexie db
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -132,7 +156,8 @@ class AppLoadService {
     UsuarioLogueadoGuard,
     { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE },
     AppLoadService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
+    MyDatabase
   ],
   bootstrap: [AppComponent]
 })
