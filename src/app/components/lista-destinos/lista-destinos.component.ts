@@ -7,14 +7,15 @@ import { DestinosApiClient } from './../../models/destinos-api-client.model';
 @Component({
   selector: 'app-lista-destinos',
   templateUrl: './lista-destinos.component.html',
-  styleUrls: ['./lista-destinos.component.css']
+  styleUrls: ['./lista-destinos.component.css'],
+  providers: [DestinosApiClient]
 })
 export class ListaDestinosComponent implements OnInit {
 
   // tslint:disable-next-line: no-output-on-prefix
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
   updates: string[];
-  all;
+  all: DestinoViaje[];
 
   constructor(public destinosApiClient: DestinosApiClient, private store: Store<AppState>){
     this.onItemAdded = new EventEmitter();
@@ -50,4 +51,5 @@ export class ListaDestinosComponent implements OnInit {
   getAll(){
   }
 }
+
 

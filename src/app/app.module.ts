@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, Injectable, InjectionToken, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { StoreModule as NgRxStoreModule, ActionReducerMap } from '@ngrx/store';
+import { StoreModule as NgRxStoreModule, ActionReducerMap, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,8 +12,8 @@ import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.
 import { ListaDestinosComponent } from './components/lista-destinos/lista-destinos.component';
 import { DestinoDetalleComponent } from './components/destino-detalle/destino-detalle.component';
 import { FormDestinoViajeComponent } from './components/form-destino-viaje/form-destino-viaje.component';
-import { DestinosApiClient } from './models/destinos-api-client.model';
-import { DestinosViajesEffects, DestinosViajesState, initializeDestinosViajesState, reducerDestinosViajes } from './models/destinos-viajes-state.model';
+
+import { DestinosViajesEffects, DestinosViajesState, intializeDestinosViajesState, InitMyDataAction, reducerDestinosViajes } from './models/destinos-viajes-state.model';
 import { LoginComponent } from './components/login/login/login.component';
 import { ProtectedComponent } from './components/protected/protected/protected.component';
 import { AuthService } from './services/auth.service';
@@ -23,6 +24,18 @@ import { VuelosMasInfoComponent } from './components/vuelos/vuelos-mas-info/vuel
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalle/vuelos-detalle.component';
 import { ReservasModule } from './reservas/reservas.module';
 
+// app config
+export interface AppConfig {
+  // tslint:disable-next-line: ban-types
+  apiEndpoint: String;
+}
+const APP_CONFIG_VALUE: AppConfig = {
+  apiEndpoint: 'http://localhost:3000'
+};
+export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
+// fin app config
+
+// init routing
 export const childrenRoutesVuelos: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: 'main', component: VuelosMainComponent },
@@ -47,6 +60,7 @@ const routes: Routes = [
       children: childrenRoutesVuelos
     }
 ];
+// end init routing
 
 // redux init
 export interface AppState{
@@ -58,10 +72,28 @@ const reducers: ActionReducerMap<AppState> = {
 };
 
 const reducersInitialState = {
-  destinos: initializeDestinosViajesState()
+  destinos: intializeDestinosViajesState()
 };
 
 // redux fin init
+
+// app init
+export function init_app(appLoadService: AppLoadService): () => Promise<any>  {
+  return () => appLoadService.intializeDestinosViajesState();
+}
+
+@Injectable()
+class AppLoadService {
+  constructor(private store: Store<AppState>, private http: HttpClient) { }
+  async intializeDestinosViajesState(): Promise<any> {
+    const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
+    const req = new HttpRequest('GET', APP_CONFIG_VALUE.apiEndpoint + '/my', { headers });
+    const response: any = await this.http.request(req).toPromise();
+    this.store.dispatch(new InitMyDataAction(response.body));
+  }
+}
+
+// fin app init
 
 @NgModule({
   declarations: [
@@ -81,6 +113,7 @@ const reducersInitialState = {
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes),
     NgRxStoreModule.forRoot(reducers, {
       initialState: reducersInitialState,
@@ -95,11 +128,14 @@ const reducersInitialState = {
     // StoreDevtoolsModule.instrument()
   ],
   providers: [
-    DestinosApiClient,
     AuthService,
-    UsuarioLogueadoGuard
+    UsuarioLogueadoGuard,
+    { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE },
+    AppLoadService,
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
 

@@ -4,6 +4,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DestinoViaje } from './destino-viaje.model';
+import { HttpClientModule } from '@angular/common/http';
+
 
 // ESTADO
 export interface DestinosViajesState{
@@ -13,12 +15,12 @@ export interface DestinosViajesState{
 }
 
 // tslint:disable-next-line: typedef
-export function initializeDestinosViajesState(){
-    return{
-        items: [],
-        loading: false,
-        favorito: null
-    };
+export function intializeDestinosViajesState() {
+  return {
+    items: [],
+    loading: false,
+    favorito: null
+  };
 }
 
 // ACCIONES
@@ -26,7 +28,8 @@ export enum DestinosViajesActionTypes{
     NUEVO_DESTINO = '[Destinos Viajes] Nuevo',
     ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito',
     VOTE_UP = '[Destinos Viajes] Vote Up',
-    VOTE_DOWN = '[Destinos Viajes] Vote Down'
+    VOTE_DOWN = '[Destinos Viajes] Vote Down',
+    INIT_MY_DATA = '[Destinos Viajes] Init My Data'
 }
 
 export class NuevoDestinoAction implements Action {
@@ -49,7 +52,12 @@ export class VoteDownAction implements Action {
     constructor(public destino: DestinoViaje){}
 }
 
-export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | VoteUpAction | VoteDownAction;
+export class InitMyDataAction implements Action {
+  type = DestinosViajesActionTypes.INIT_MY_DATA;
+  constructor(public destinos: string[]) {}
+}
+
+export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | VoteUpAction | VoteDownAction | InitMyDataAction;
 
 
 // REDUCERS
@@ -58,6 +66,13 @@ export function reducerDestinosViajes(
     action: DestinosViajesActions
 ): DestinosViajesState{
     switch (action.type){
+        case DestinosViajesActionTypes.INIT_MY_DATA: {
+          const destinos: string[] = (action as InitMyDataAction).destinos;
+          return {
+              ...state,
+              items: destinos.map((d) => new DestinoViaje(d, ''))
+            };
+        }
         case DestinosViajesActionTypes.NUEVO_DESTINO: {
             return{
                 ...state,
