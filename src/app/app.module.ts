@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from '@angular/common/http';
 import Dexie from 'dexie';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -199,7 +200,8 @@ function HttpLoaderFactory(http: HttpClient) {
           useFactory: (HttpLoaderFactory),
           deps: [HttpClient]
       }
-    })
+    }),
+    NgxMapboxGLModule
     // StoreDevtoolsModule.instrument()
   ],
   providers: [
