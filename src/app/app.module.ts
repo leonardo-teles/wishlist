@@ -8,6 +8,7 @@ import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from '@angular
 import Dexie from 'dexie';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -201,7 +202,8 @@ function HttpLoaderFactory(http: HttpClient) {
           deps: [HttpClient]
       }
     }),
-    NgxMapboxGLModule
+    NgxMapboxGLModule,
+    BrowserAnimationsModule
     // StoreDevtoolsModule.instrument()
   ],
   providers: [
